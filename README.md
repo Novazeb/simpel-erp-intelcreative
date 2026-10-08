@@ -1,58 +1,120 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Enterprise Resource Planning PT Intel Creative
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Enterprise Resource Planning (ERP) PT Intel Creative merupakan platform terintegrasi yang dirancang untuk mengelola proses bisnis operasional, manajemen sumber daya manusia, presensi, penggajian, penugasan proyek, serta pencatatan keuangan dan akuntansi korporat.
 
-## About Laravel
+Aplikasi ini dibangun menggunakan arsitektur modern berbasis Domain-Driven Design (DDD) untuk memastikan modularitas, skalabilitas, dan kepatuhan terhadap standar tata kelola data perusahaan.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Arsitektur Teknologi
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Sistem mengadopsi tumpukan teknologi modern dengan pembagian peran yang terstruktur:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Backend: Laravel 12 berbasis PHP 8.3 dengan pemanfaatan Service Layer dan Action Pattern.
+2. Frontend: Vue 3 Single Page Application (SPA) yang terintegrasi melalui Inertia.js v3.
+3. Antarmuka Pengguna: Tailwind CSS dengan tipografi standar Plus Jakarta Sans dan format angka tabular numerik.
+4. Basis Data: Relational Database Management System dengan integritas referensial dan pengindeksan parsial.
+5. Presisi Finansial: Penanganan kalkulasi moneter menggunakan komputasi desimal berpresisi tinggi untuk mencegah galat pembulatan.
 
-## Learning Laravel
+## Modul Utama Sistem
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 1. Manajemen Sumber Daya Manusia (HR)
+Modul ini mencakup pengelolaan siklus hidup karyawan secara komprehensif:
+* Manajemen master data personel, departemen, dan jabatan struktural.
+* Pengelolaan status ketenagakerjaan karyawan tetap (PKWTT) dan kontrak (PKWT).
+* Penyimpanan dokumen identitas dan catatan kepegawaian resmi.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Presensi dan Manajemen Cuti
+Pencatatan kehadiran dan pengajuan izin karyawan dengan pengamanan ganda:
+* Mekanisme pencatatan waktu masuk (Clock-In) dan keluar (Clock-Out) harian.
+* Perlindungan atomic locking berbasis cache untuk mencegah manipulasi data ganda konkuren.
+* Kalkulasi keterlambatan dan durasi kerja efektif otomatis.
+* Alur persetujuan permohonan cuti bertingkat (Multi-Level Approval).
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### 3. Penggajian dan Remunerasi (Payroll)
+Pengelolaan kompensasi karyawan sesuai regulasi ketenagakerjaan dan perpajakan Indonesia:
+* Perhitungan komponen gaji pokok, tunjangan jabatan, tunjangan operasional, dan kompensasi lembur.
+* Pemotongan iuran BPJS Ketenagakerjaan dan BPJS Kesehatan secara otomatis.
+* Kalkulasi estimasi Pajak Penghasilan (PPh 21).
+* Penerbitan dokumen resmi slip gaji digital.
+* Portal mandiri snapshot transparansi paket remunerasi karyawan.
 
-## Agentic Development
+### 4. Manajemen Proyek dan Lembar Kerja (Project & Timesheet)
+Pengawasan pelaksanaan proyek kreatif dan penugasan operasional:
+* Monitoring status proyek dari tahap inisiasi hingga penyelesaian.
+* Pembagian tugas kerja kepada personel pelaksana.
+* Pencatatan lembar kerja harian (Timesheet) untuk transparansi jam kerja dan alokasi sumber daya.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 5. Keuangan dan Akuntansi (Finance & Accounting)
+Pengelolaan tata buku keuangan korporat yang akuntabel:
+* Struktur bagan akun standar (Chart of Accounts).
+* Pencatatan buku besar (General Ledger) dan jurnal memorial.
+* Otomasi pencatatan jurnal pengeluaran saat periode penggajian disetujui.
+* Pengelolaan dan verifikasi disbursement voucher.
+
+### 6. Keamanan, Kontrol Akses, dan Kepatuhan (Security & Audit Trail)
+Infrastruktur perlindungan data dan jejak transaksi:
+* Kontrol akses berbasis peran (Role-Based Access Control) multi-level mulai dari Superadmin, Direktur, HR Admin, Finance, Project Lead, hingga Karyawan.
+* Pencatatan jejak audit (Audit Trail) terhadap perubahan data penting.
+* Pembatasan laju permintaan (Rate Limiting) untuk memitigasi serangan brute force.
+
+## Prasyarat Lingkungan
+
+Sebelum menjalankan instalasi, pastikan lingkungan peladen telah memenuhi spesifikasi berikut:
+
+* PHP versi 8.3 atau lebih tinggi
+* Ekstensi PHP: OpenSSL, PDO, Mbstring, Tokenizer, XML, Ctype, JSON, BCMath, GD/Imagick
+* Composer versi 2.x
+* Node.js versi 20.x atau lebih tinggi beserta NPM
+* Database SQLite atau MySQL 8.0+
+
+## Panduan Instalasi
+
+Ikuti langkah-langkah berikut untuk memasang aplikasi pada lingkungan lokal:
+
+1. Kloning repositori proyek:
+   ```bash
+   git clone https://github.com/Novazeb/simpel-erp-intelcreative.git
+   cd simpel-erp-intelcreative
+   ```
+
+2. Pasang dependensi PHP melalui Composer:
+   ```bash
+   composer install
+   ```
+
+3. Pasang dependensi JavaScript melalui NPM:
+   ```bash
+   npm install
+   ```
+
+4. Siapkan file konfigurasi lingkungan:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. Lakukan migrasi skema basis data dan pengisian data awal:
+   ```bash
+   php artisan migrate --seed
+   ```
+
+6. Kompilasi aset antarmuka pengguna:
+   ```bash
+   npm run build
+   ```
+
+7. Jalankan peladen lokal:
+   ```bash
+   php artisan serve
+   ```
+
+## Verifikasi dan Pengujian
+
+Sistem dilengkapi dengan rangkaian pengujian otomatis untuk menjamin integritas fungsional:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+php artisan test
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Kebijakan Lisensi
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Hak Cipta PT Intel Creative. Seluruh hak cipta dilindungi undang-undang. Perangkat lunak ini dikembangkan untuk keperluan operasional internal perusahaan.
