@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Finance\GeneralLedgerController;
 use App\Http\Controllers\Finance\VoucherController;
+use App\Http\Controllers\Health\HealthCheckController;
 use App\Http\Controllers\HR\EmployeeController;
 use App\Http\Controllers\Operations\ProjectController;
 use App\Http\Controllers\Operations\TimesheetController;
@@ -22,6 +23,9 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Production Health Check & Monitoring API
+Route::get('/api/health', [HealthCheckController::class, 'check'])->name('api.health');
 
 Route::middleware(['auth'])->group(function () {
     // 0. Ringkasan Eksekutif
