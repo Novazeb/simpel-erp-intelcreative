@@ -16,6 +16,8 @@ class ChartOfAccountSeeder extends Seeder
         $accounts = [
             ['code' => '1-1001', 'name' => 'Kas Operasional Kantor', 'type' => 'ASSET'],
             ['code' => '1-1002', 'name' => 'Kas Operasional Bank', 'type' => 'ASSET'],
+            ['code' => '1-2001', 'name' => 'Aset Tetap Peralatan Kantor', 'type' => 'ASSET'],
+            ['code' => '1-2002', 'name' => 'Akumulasi Penyusutan Aset', 'type' => 'ASSET'],
             ['code' => '2-2001', 'name' => 'Utang PPh 21', 'type' => 'LIABILITY'],
             ['code' => '2-2002', 'name' => 'Utang BPJS Ketenagakerjaan', 'type' => 'LIABILITY'],
             ['code' => '2-2003', 'name' => 'Utang BPJS Kesehatan', 'type' => 'LIABILITY'],
@@ -24,6 +26,8 @@ class ChartOfAccountSeeder extends Seeder
             ['code' => '5-1002', 'name' => 'Beban Lembur Karyawan', 'type' => 'EXPENSE'],
             ['code' => '5-1003', 'name' => 'Beban Tunjangan Karyawan', 'type' => 'EXPENSE'],
             ['code' => '5-1004', 'name' => 'Beban Iuran BPJS Kantor', 'type' => 'EXPENSE'],
+            ['code' => '5-2001', 'name' => 'Beban Operasional & Reimbursement', 'type' => 'EXPENSE'],
+            ['code' => '5-3001', 'name' => 'Beban Penyusutan Aset', 'type' => 'EXPENSE'],
         ];
 
         foreach ($accounts as $account) {
