@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
             ChartOfAccountSeeder::class,
             StaffSimulationSeeder::class,
+            KioskScannerRoleSeeder::class,
+            GoldFeaturesSeeder::class,
         ]);
     }
 }
