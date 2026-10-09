@@ -93,6 +93,8 @@ export function formatCurrency(val) {
   return `Rp ${formattedInt}`;
 }
 
+export const formatRupiah = formatCurrency;
+
 /**
  * Contoh kalkulasi subtotal aman sesuai spesifikasi umpanbalik4.md
  */
