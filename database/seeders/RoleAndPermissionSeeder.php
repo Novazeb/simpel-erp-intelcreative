@@ -81,6 +81,7 @@ class RoleAndPermissionSeeder extends Seeder
         $financeOfficer->givePermissionTo([
             'employee.view-any',
             'employee.view-salary',
+            'attendance.record-self',
             'payroll.view-all-slips',
             'payroll.view-my-slip',
             'finance.voucher-release',
