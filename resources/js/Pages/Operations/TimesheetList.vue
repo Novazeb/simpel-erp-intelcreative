@@ -1,14 +1,18 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import TimesheetModal from '@/Components/Operations/TimesheetModal.vue';
 import { ref, computed } from 'vue';
 import { sumBy } from '@/Utils/money';
 
 const props = defineProps({
   timesheets: Array,
+  projects: Array,
+  tasks: Array,
   currentUserEmail: String,
   isManager: Boolean,
 });
 
+const showModal = ref(false);
 const activeTab = ref(props.isManager ? 'all' : 'my');
 
 const filteredTimesheets = computed(() => {
@@ -25,12 +29,20 @@ const totalHours = computed(() => {
 
 <template>
   <AppLayout>
-    <template #header>Lembar Kerja (Timesheet)</template>
+    <template #header>Log Jam Proyek (Timesheet)</template>
 
     <div class="space-y-6">
-      <div class="pb-2 border-b border-slate-200">
-        <h2 class="text-lg font-bold text-black">Pelacakan Durasi & Billable Hours</h2>
-        <p class="text-xs text-slate-600 mt-0.5">Alokasi jam kerja langsung ke proyek klien untuk kalkulasi biaya tenaga kerja langsung.</p>
+      <div class="pb-2 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-black">Pelacakan Durasi & Billable Hours</h2>
+          <p class="text-xs text-slate-600 mt-0.5">Alokasi jam kerja langsung ke proyek klien untuk kalkulasi biaya tenaga kerja langsung.</p>
+        </div>
+        <button
+          @click="showModal = true"
+          class="px-4 py-2 bg-[#0a192f] hover:bg-[#112240] text-white text-xs font-semibold rounded-md transition shadow-xs self-start md:self-auto"
+        >
+          + Catat Jam Kerja
+        </button>
       </div>
 
       <!-- Tab Filter & Ringkasan Jam -->
@@ -107,5 +119,13 @@ const totalHours = computed(() => {
         </table>
       </div>
     </div>
+
+    <!-- Modal Input Timesheet -->
+    <TimesheetModal
+      :show="showModal"
+      :projects="projects"
+      :tasks="tasks"
+      @close="showModal = false"
+    />
   </AppLayout>
 </template>
