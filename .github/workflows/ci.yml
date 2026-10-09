@@ -62,3 +62,4 @@ jobs:
 
       - name: Verify Code Style (Laravel Pint)
         run: vendor/bin/pint --test
+
