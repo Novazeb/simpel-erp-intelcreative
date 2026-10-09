@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import DynamicQrWidget from '@/Components/Attendance/DynamicQrWidget.vue';
 import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -15,25 +16,34 @@ const doClockIn = () => {
 
 <template>
   <AppLayout>
-    <template #header>Presensi Kerja</template>
+    <template #header>Presensi & Kehadiran</template>
 
     <div class="space-y-6">
-      <!-- Minimalist Action Bar (Putih dengan aksen biru tua) -->
-      <div class="bg-white border border-slate-200 rounded-md p-6 flex items-center justify-between">
-        <div>
-          <h2 class="text-base font-bold text-black">Catatan Kehadiran Harian</h2>
-          <p class="text-xs text-slate-600 mt-0.5">Lakukan pencatatan kehadiran sesuai jadwal kerja yang ditetapkan.</p>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Minimalist Action Bar (Putih dengan aksen biru tua) -->
+        <div class="lg:col-span-2 bg-white border border-slate-200 rounded-md p-6 flex flex-col justify-between">
+          <div>
+            <h2 class="text-base font-bold text-black">Catatan Kehadiran Harian</h2>
+            <p class="text-xs text-slate-600 mt-1">Lakukan pencatatan kehadiran sesuai jadwal kerja yang ditetapkan atau tunjukkan kode QR dinamis di lobi kantor.</p>
+          </div>
+          <div class="pt-6">
+            <button 
+              @click="doClockIn"
+              :disabled="clockForm.processing"
+              class="min-h-[40px] px-5 py-2.5 bg-[#0a192f] hover:bg-[#112240] text-white font-medium text-xs rounded-md transition inline-flex items-center gap-2 disabled:opacity-50 focus:ring-2 focus:ring-slate-900 focus:outline-hidden"
+            >
+              <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{{ clockForm.processing ? 'Mencatat...' : 'Catat Presensi Web Mandiri' }}</span>
+            </button>
+          </div>
         </div>
-        <button 
-          @click="doClockIn"
-          :disabled="clockForm.processing"
-          class="min-h-[40px] px-5 py-2.5 bg-[#0a192f] hover:bg-[#112240] text-white font-medium text-xs rounded-md transition inline-flex items-center gap-2 disabled:opacity-50 focus:ring-2 focus:ring-slate-900 focus:outline-hidden"
-        >
-          <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>{{ clockForm.processing ? 'Mencatat...' : 'Catat Presensi' }}</span>
-        </button>
+
+        <!-- Dynamic QR Widget -->
+        <div>
+          <DynamicQrWidget />
+        </div>
       </div>
 
       <!-- Timesheet Table -->
