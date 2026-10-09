@@ -22,6 +22,9 @@ class Attendance extends Model
         'early_leave_minutes',
         'overtime_hours',
         'status',
+        'attendance_method',
+        'kiosk_device_id',
+        'notes',
     ];
 
     protected function casts(): array
