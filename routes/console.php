@@ -27,3 +27,19 @@ Schedule::command('audit:archive --months=12')
     ->monthlyOn(1, '01:00')
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/audit-archive.log'));
+
+Schedule::command('attendance:close-daily-window')
+    ->dailyAt('09:26')
+    ->timezone('Asia/Jakarta')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/attendance-close.log'));
+
+Schedule::command('asset:process-depreciation')
+    ->monthlyOn(1, '00:30')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/asset-depreciation.log'));
+
+Schedule::command('saas:check-renewals')
+    ->dailyAt('08:00')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/saas-renewals.log'));
