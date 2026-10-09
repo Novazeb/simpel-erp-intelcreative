@@ -78,7 +78,7 @@ const openGovernance = ref(true);
                 href="/attendance" 
                 class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-300 hover:text-white hover:bg-[#172a46] transition"
               >
-                <span>Presensi & Absensi</span>
+                <span>Presensi & Kehadiran</span>
               </Link>
             </div>
           </div>
@@ -100,7 +100,7 @@ const openGovernance = ref(true);
                 href="/operations/timesheets" 
                 class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-300 hover:text-white hover:bg-[#172a46] transition"
               >
-                <span>Lembar Kerja (Timesheet)</span>
+                <span>Log Jam Proyek (Timesheet)</span>
               </Link>
             </div>
           </div>
@@ -150,6 +150,12 @@ const openGovernance = ref(true);
                 class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-300 hover:text-white hover:bg-[#172a46] transition"
               >
                 <span>Buku Besar & COA</span>
+              </Link>
+              <Link 
+                href="/finance/reimbursements" 
+                class="flex items-center gap-2.5 px-3 py-2 rounded text-slate-300 hover:text-white hover:bg-[#172a46] transition"
+              >
+                <span>Klaim & Kas Kecil</span>
               </Link>
             </div>
           </div>
