@@ -55,3 +55,4 @@ export default function () {
     // Jeda alami antar aksi pengguna (0.5 - 2 detik)
     sleep(Math.random() * 1.5 + 0.5);
 }
+
