@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Domains\HR\Models\Employee;
 use App\Domains\HR\Services\EmployeeBulkImportService;
 use Database\Seeders\ChartOfAccountSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -28,13 +28,13 @@ class BulkImportAndArchivingTest extends TestCase
      */
     public function test_employee_bulk_import_service_success(): void
     {
-        $csvContent = <<<CSV
+        $csvContent = <<<'CSV'
 nik,full_name,email,phone,department_code,designation_title,work_shift_name,employment_status,join_date,bank_name,bank_account_number,bank_account_holder,basic_salary,tax_status
 ITC-IMP-001,Impor User Satu,impor1@intelcreative.co.id,081234567,TECH,Senior Dev,Reguler,PKWTT,2026-01-01,BCA,111222333,Impor Satu,15000000.00,TK/0
 ITC-IMP-002,Impor User Dua,impor2@intelcreative.co.id,081234568,DESIGN,UI Designer,Reguler,PKWT,2026-02-01,Mandiri,444555666,Impor Dua,12000000.00,K/1
 CSV;
 
-        $service = new EmployeeBulkImportService();
+        $service = new EmployeeBulkImportService;
         $rows = $service->parseCsv($csvContent);
 
         $this->assertCount(2, $rows);
@@ -51,13 +51,13 @@ CSV;
      */
     public function test_employee_bulk_import_rollback_on_duplicate(): void
     {
-        $csvContent = <<<CSV
+        $csvContent = <<<'CSV'
 nik,full_name,email,phone,department_code,designation_title,work_shift_name,employment_status,join_date,bank_name,bank_account_number,bank_account_holder,basic_salary,tax_status
 ITC-GOOD,Valid User,valid@intelcreative.co.id,08111,TECH,Dev,Reguler,PKWT,2026-01-01,BCA,123,Valid,10000000.00,TK/0
 ITC-GOOD,Duplikat User,dup@intelcreative.co.id,08112,TECH,Dev,Reguler,PKWT,2026-01-01,BCA,124,Dup,10000000.00,TK/0
 CSV;
 
-        $service = new EmployeeBulkImportService();
+        $service = new EmployeeBulkImportService;
         $rows = $service->parseCsv($csvContent);
 
         $this->expectException(ValidationException::class);
@@ -77,9 +77,9 @@ CSV;
     {
         // Masukkan data log audit berusia 14 bulan lalu
         DB::table('audit_trails')->insert([
-            'id' => (string) \Illuminate\Support\Str::uuid(),
+            'id' => (string) Str::uuid(),
             'auditable_type' => 'App\Domains\HR\Models\Employee',
-            'auditable_id' => (string) \Illuminate\Support\Str::uuid(),
+            'auditable_id' => (string) Str::uuid(),
             'event' => 'updated',
             'field_changed' => 'basic_salary',
             'old_value' => '10000000',
@@ -89,9 +89,9 @@ CSV;
 
         // Masukkan data log audit baru (1 bulan lalu)
         DB::table('audit_trails')->insert([
-            'id' => (string) \Illuminate\Support\Str::uuid(),
+            'id' => (string) Str::uuid(),
             'auditable_type' => 'App\Domains\HR\Models\Employee',
-            'auditable_id' => (string) \Illuminate\Support\Str::uuid(),
+            'auditable_id' => (string) Str::uuid(),
             'event' => 'created',
             'field_changed' => null,
             'created_at' => now()->subMonth(),
@@ -107,4 +107,3 @@ CSV;
         $this->assertEquals(1, DB::table('audit_trails')->count());
     }
 }
-

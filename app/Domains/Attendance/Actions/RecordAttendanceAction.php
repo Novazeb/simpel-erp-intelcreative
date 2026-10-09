@@ -6,7 +6,6 @@ use App\Domains\Attendance\Models\Attendance;
 use App\Domains\Attendance\Services\TardinessCalculator;
 use App\Domains\HR\Models\Employee;
 use Carbon\Carbon;
-use Illuminate\Validation\ValidationException;
 
 class RecordAttendanceAction
 {
@@ -49,7 +48,7 @@ class RecordAttendanceAction
 
         // Hitung overtime jika clock out melebihi shift end_time
         if ($shift) {
-            $shiftEnd = Carbon::parse($workDate . ' ' . $shift->end_time);
+            $shiftEnd = Carbon::parse($workDate.' '.$shift->end_time);
             if ($timestamp->greaterThan($shiftEnd)) {
                 $overtimeMinutes = $shiftEnd->diffInMinutes($timestamp);
                 $attendance->overtime_hours = round($overtimeMinutes / 60, 2);
@@ -61,4 +60,3 @@ class RecordAttendanceAction
         return $attendance;
     }
 }
-

@@ -18,7 +18,7 @@ class CalculatePayrollChunkJob implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @param Collection<string> $employeeIds
+     * @param  Collection<string>  $employeeIds
      */
     public function __construct(
         public Collection $employeeIds,
@@ -45,4 +45,3 @@ class CalculatePayrollChunkJob implements ShouldQueue
         }
     }
 }
-

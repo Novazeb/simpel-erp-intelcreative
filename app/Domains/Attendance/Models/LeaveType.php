@@ -32,4 +32,3 @@ class LeaveType extends Model
         return $this->hasMany(LeaveRequest::class);
     }
 }
-

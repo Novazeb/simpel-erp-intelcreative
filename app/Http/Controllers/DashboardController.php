@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Domains\Attendance\Models\Attendance;
+use App\Domains\Finance\Models\DisbursementVoucher;
 use App\Domains\HR\Models\Employee;
 use App\Domains\Payroll\Models\PayrollPeriod;
-use App\Domains\Finance\Models\DisbursementVoucher;
-use App\Domains\Attendance\Models\Attendance;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashboardController extends Controller

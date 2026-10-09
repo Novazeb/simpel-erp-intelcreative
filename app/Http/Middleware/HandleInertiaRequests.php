@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Domains\Attendance\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -46,7 +47,7 @@ class HandleInertiaRequests extends Middleware
                     'permissions' => $request->user()->getAllPermissions()->pluck('name'),
                 ] : null,
             ],
-            'pendingApprovalsCount' => fn () => $request->user() ? \App\Domains\Attendance\Models\LeaveRequest::whereIn('status', ['PENDING', 'PENDING_SUPERVISOR', 'PENDING_HOD', 'PENDING_HR'])->count() : 0,
+            'pendingApprovalsCount' => fn () => $request->user() ? LeaveRequest::whereIn('status', ['PENDING', 'PENDING_SUPERVISOR', 'PENDING_HOD', 'PENDING_HR'])->count() : 0,
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

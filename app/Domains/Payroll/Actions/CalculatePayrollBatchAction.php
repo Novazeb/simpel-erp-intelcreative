@@ -35,6 +35,7 @@ class CalculatePayrollBatchAction
 
         if ($employeeIds->isEmpty()) {
             $period->update(['status' => 'CALCULATED']);
+
             return null;
         }
 
@@ -48,6 +49,7 @@ class CalculatePayrollBatchAction
                 $job->handle($this->calculationEngine);
             }
             $period->update(['status' => 'CALCULATED']);
+
             return null;
         }
 
@@ -58,7 +60,7 @@ class CalculatePayrollBatchAction
                 $period->update(['status' => 'CALCULATED']);
             })
             ->catch(function (Batch $batch, Throwable $e) {
-                Log::error("Gagal memproses batch payroll {$batch->id}: " . $e->getMessage());
+                Log::error("Gagal memproses batch payroll {$batch->id}: ".$e->getMessage());
             })
             ->dispatch();
 

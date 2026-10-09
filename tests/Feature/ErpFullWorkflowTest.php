@@ -2,19 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Domains\Attendance\Actions\RecordAttendanceAction;
-use App\Domains\Attendance\Models\Attendance;
 use App\Domains\Attendance\Models\LeaveRequest;
 use App\Domains\Attendance\Models\LeaveType;
-use App\Domains\HR\Models\WorkShift;
 use App\Domains\Attendance\Services\TardinessCalculator;
-use App\Domains\Finance\Actions\GeneratePayrollAutoJournalAction;
-use App\Domains\Finance\Models\ChartOfAccount;
-use App\Domains\Finance\Models\DisbursementVoucher;
 use App\Domains\Finance\Models\JournalEntry;
 use App\Domains\HR\Models\Department;
 use App\Domains\HR\Models\Designation;
 use App\Domains\HR\Models\Employee;
+use App\Domains\HR\Models\WorkShift;
 use App\Domains\Payroll\Actions\ApprovePayrollPeriodAction;
 use App\Domains\Payroll\Actions\CalculatePayrollBatchAction;
 use App\Domains\Payroll\Models\PayrollPeriod;
@@ -92,7 +87,7 @@ class ErpFullWorkflowTest extends TestCase
      */
     public function test_tc_att_01_tardiness_tolerance_calculation(): void
     {
-        $calculator = new TardinessCalculator();
+        $calculator = new TardinessCalculator;
 
         // 09:14 (dalam toleransi 15 menit)
         $late1 = $calculator->calculateLateMinutes('09:00:00', 15, Carbon::parse('2026-10-08 09:14:00'));
@@ -153,7 +148,7 @@ class ErpFullWorkflowTest extends TestCase
             'status' => 'APPROVED',
         ]);
 
-        $engine = new PayrollCalculationEngine();
+        $engine = new PayrollCalculationEngine;
         $slip = $engine->calculateForEmployee($period, $employee);
 
         $unpaidItem = $slip->items()->where('name', 'Potongan Unpaid Leave')->first();
@@ -193,7 +188,7 @@ class ErpFullWorkflowTest extends TestCase
             'status' => 'DRAFT',
         ]);
 
-        $engine = new PayrollCalculationEngine();
+        $engine = new PayrollCalculationEngine;
 
         // Hitung Pertama
         $slip1 = $engine->calculateForEmployee($period, $employee);

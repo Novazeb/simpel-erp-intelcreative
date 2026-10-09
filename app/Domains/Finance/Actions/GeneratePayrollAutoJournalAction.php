@@ -46,7 +46,7 @@ class GeneratePayrollAutoJournalAction
             }
 
             // 1. Buat Voucher
-            $voucherNumber = 'DISB-PAYROLL-' . $period->payment_date->format('Ym') . '-' . strtoupper(Str::random(4));
+            $voucherNumber = 'DISB-PAYROLL-'.$period->payment_date->format('Ym').'-'.strtoupper(Str::random(4));
             $voucher = DisbursementVoucher::updateOrCreate(
                 ['payroll_period_id' => $period->id],
                 [
@@ -58,8 +58,8 @@ class GeneratePayrollAutoJournalAction
             );
 
             // 2. Buat Journal Entry
-            $entryNumber = 'JRN-' . $period->payment_date->format('Ym') . '-' . strtoupper(Str::random(4));
-            
+            $entryNumber = 'JRN-'.$period->payment_date->format('Ym').'-'.strtoupper(Str::random(4));
+
             // Hapus entry lama jika ada untuk idempotensi
             $existingEntry = JournalEntry::where('reference_type', 'PAYROLL_DISBURSEMENT')
                 ->where('reference_id', $period->id)
@@ -74,7 +74,7 @@ class GeneratePayrollAutoJournalAction
                 'reference_type' => 'PAYROLL_DISBURSEMENT',
                 'reference_id' => $period->id,
                 'transaction_date' => $period->payment_date,
-                'description' => 'Penjurnalan Otomatis Penggajian: ' . $period->name,
+                'description' => 'Penjurnalan Otomatis Penggajian: '.$period->name,
                 'created_at' => now(),
             ]);
 
@@ -82,7 +82,7 @@ class GeneratePayrollAutoJournalAction
             $accExpenseSalary = ChartOfAccount::firstOrCreate(['code' => '5-1001'], ['name' => 'Beban Gaji Karyawan', 'type' => 'EXPENSE']);
             $accExpenseOvertime = ChartOfAccount::firstOrCreate(['code' => '5-1002'], ['name' => 'Beban Lembur Karyawan', 'type' => 'EXPENSE']);
             $accExpenseAllowance = ChartOfAccount::firstOrCreate(['code' => '5-1003'], ['name' => 'Beban Tunjangan Karyawan', 'type' => 'EXPENSE']);
-            
+
             $accTaxPayable = ChartOfAccount::firstOrCreate(['code' => '2-2001'], ['name' => 'Utang PPh 21', 'type' => 'LIABILITY']);
             $accBpjsPayable = ChartOfAccount::firstOrCreate(['code' => '2-2002'], ['name' => 'Utang BPJS Ketenagakerjaan', 'type' => 'LIABILITY']);
             $accBank = ChartOfAccount::firstOrCreate(['code' => '1-1002'], ['name' => 'Kas Operasional Bank', 'type' => 'ASSET']);
@@ -143,4 +143,3 @@ class GeneratePayrollAutoJournalAction
         });
     }
 }
-

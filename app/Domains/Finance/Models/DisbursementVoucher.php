@@ -40,4 +40,3 @@ class DisbursementVoucher extends Model
             ->where('reference_type', 'PAYROLL_DISBURSEMENT');
     }
 }
-

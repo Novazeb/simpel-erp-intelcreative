@@ -74,7 +74,7 @@ class ScalabilityAndComplianceEnhancementTest extends TestCase
         LeaveApprovalStep::create(['leave_request_id' => $leaveRequest->id, 'approver_id' => $supervisor->id, 'step_level' => 1, 'status' => 'PENDING']);
         LeaveApprovalStep::create(['leave_request_id' => $leaveRequest->id, 'approver_id' => $supervisor->id, 'step_level' => 2, 'status' => 'PENDING']);
 
-        $action = new ProcessMultiLevelLeaveApprovalAction();
+        $action = new ProcessMultiLevelLeaveApprovalAction;
 
         // Step 1: Supervisor Approve
         $action->approve($leaveRequest, $supervisor, 'Disetujui lead');
@@ -90,14 +90,14 @@ class ScalabilityAndComplianceEnhancementTest extends TestCase
      */
     public function test_pph21_ter_and_bpjs_salary_cap(): void
     {
-        $pph = new Pph21TerCalculator();
+        $pph = new Pph21TerCalculator;
         // Di bawah PTKP bulanan dasar (<= 5.400.000) -> 0%
         $this->assertEquals(0.00, $pph->calculateMonthlyTax(5000000.00, 'TK/0'));
 
         // Gaji 10.000.000 (Kategori A: TER 2%) -> 200.000
         $this->assertEquals(200000.00, $pph->calculateMonthlyTax(10000000.00, 'TK/0'));
 
-        $bpjs = new BpjsCapCalculator();
+        $bpjs = new BpjsCapCalculator;
         // BPJS Kes: Capped pada Rp 12.000.000 (Gaji 20jt tetap kena 1% dari 12jt = 120.000)
         $this->assertEquals(120000.00, $bpjs->calculateBpjsKesehatan(20000000.00));
 
@@ -136,7 +136,7 @@ class ScalabilityAndComplianceEnhancementTest extends TestCase
             'payment_date' => '2026-11-01', 'total_amount' => 9500000.00, 'status' => 'RELEASED',
         ]);
 
-        $exporter = new CorporateBankingExporter();
+        $exporter = new CorporateBankingExporter;
 
         // BCA
         $bcaContent = $exporter->exportBcaFormat($voucher);
@@ -176,4 +176,3 @@ class ScalabilityAndComplianceEnhancementTest extends TestCase
         $this->assertDatabaseHas('payroll_slips', ['payroll_period_id' => $period->id]);
     }
 }
-

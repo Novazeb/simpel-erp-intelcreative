@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Finance;
 use App\Domains\Finance\Models\ChartOfAccount;
 use App\Domains\Finance\Models\JournalEntry;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class GeneralLedgerController extends Controller

@@ -45,7 +45,7 @@ class CorporateBankingExporter
 
         $lines = [];
         // Header kolom MCM
-        $lines[] = "Beneficiary Account Number,Beneficiary Name,Beneficiary Bank,Amount,Currency,Remark";
+        $lines[] = 'Beneficiary Account Number,Beneficiary Name,Beneficiary Bank,Amount,Currency,Remark';
 
         foreach ($slips as $slip) {
             $emp = $slip->employee;
@@ -60,4 +60,3 @@ class CorporateBankingExporter
         return implode("\r\n", $lines);
     }
 }
-

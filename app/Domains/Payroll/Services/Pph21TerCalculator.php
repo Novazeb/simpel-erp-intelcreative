@@ -7,7 +7,7 @@ class Pph21TerCalculator
     /**
      * Menghitung PPh 21 menggunakan Tarif Efektif Rata-Rata (TER)
      * PP 58/2023 & PMK 168/2023
-     * 
+     *
      * Kategori A: TK/0 (54 jt), TK/1 (58.5 jt), K/0 (58.5 jt)
      * Kategori B: TK/2, TK/3, K/1, K/2
      * Kategori C: K/3
@@ -74,4 +74,3 @@ class Pph21TerCalculator
         }
     }
 }
-

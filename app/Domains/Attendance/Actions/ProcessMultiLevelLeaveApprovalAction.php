@@ -2,7 +2,6 @@
 
 namespace App\Domains\Attendance\Actions;
 
-use App\Domains\Attendance\Models\LeaveApprovalStep;
 use App\Domains\Attendance\Models\LeaveRequest;
 use App\Domains\HR\Models\Employee;
 use Illuminate\Support\Facades\DB;
@@ -89,4 +88,3 @@ class ProcessMultiLevelLeaveApprovalAction
         });
     }
 }
-

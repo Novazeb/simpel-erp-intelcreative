@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
 
 class ArchiveAuditTrailsCommand extends Command
 {
@@ -40,12 +40,13 @@ class ArchiveAuditTrailsCommand extends Command
         $count = $oldLogs->count();
         if ($count === 0) {
             $this->info("Tidak ada log audit yang melebihi batas usia {$months} bulan. Tabel operasional tetap ramping.");
+
             return Command::SUCCESS;
         }
 
         $this->info("Ditemukan {$count} entri log usang. Menyiapkan arsip berkas json/csv...");
 
-        $archiveFileName = 'archives/audit-trails-' . Carbon::now()->format('Y-m-d-His') . '.json';
+        $archiveFileName = 'archives/audit-trails-'.Carbon::now()->format('Y-m-d-His').'.json';
         $jsonData = json_encode($oldLogs, JSON_PRETTY_PRINT);
 
         // Simpan ke storage lokal / S3
@@ -62,4 +63,3 @@ class ArchiveAuditTrailsCommand extends Command
         return Command::SUCCESS;
     }
 }
-

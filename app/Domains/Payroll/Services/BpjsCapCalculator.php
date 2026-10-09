@@ -9,6 +9,7 @@ class BpjsCapCalculator
      * Porsi Karyawan = 1%
      */
     public const BPJS_KES_MAX_BASE = 12000000.00;
+
     public const BPJS_KES_RATE_EMPLOYEE = 0.01;
 
     /**
@@ -16,7 +17,9 @@ class BpjsCapCalculator
      * JHT Karyawan: 2% (tanpa cap), JP Karyawan: 1% (capped)
      */
     public const BPJS_TK_JP_MAX_BASE = 10042300.00;
+
     public const BPJS_TK_JHT_RATE = 0.02;
+
     public const BPJS_TK_JP_RATE = 0.01;
 
     public function calculateBpjsKesehatan(float $basicSalary): float
@@ -35,4 +38,3 @@ class BpjsCapCalculator
         return round($jht + $jp, 2);
     }
 }
-

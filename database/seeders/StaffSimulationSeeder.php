@@ -157,4 +157,3 @@ class StaffSimulationSeeder extends Seeder
         $engine->calculateForEmployee($period, $empDewi);
     }
 }
-

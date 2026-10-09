@@ -40,4 +40,3 @@ class LeaveApprovalStep extends Model
         return $this->belongsTo(Employee::class, 'approver_id');
     }
 }
-

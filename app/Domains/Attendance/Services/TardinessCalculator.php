@@ -14,7 +14,7 @@ class TardinessCalculator
      */
     public function calculateLateMinutes(string $shiftStartTime, int $lateToleranceMinutes, Carbon $clockIn): int
     {
-        $shiftStart = Carbon::parse($clockIn->toDateString() . ' ' . $shiftStartTime);
+        $shiftStart = Carbon::parse($clockIn->toDateString().' '.$shiftStartTime);
 
         if ($clockIn->lessThanOrEqualTo($shiftStart)) {
             return 0;
@@ -29,4 +29,3 @@ class TardinessCalculator
         return (int) $differenceInMinutes;
     }
 }
-

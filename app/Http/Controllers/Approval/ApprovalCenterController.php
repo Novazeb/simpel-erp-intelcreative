@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Approval;
 
 use App\Domains\Attendance\Models\LeaveRequest;
-use App\Domains\Payroll\Models\PayrollPeriod;
 use App\Domains\Finance\Models\DisbursementVoucher;
+use App\Domains\Payroll\Models\PayrollPeriod;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ApprovalCenterController extends Controller

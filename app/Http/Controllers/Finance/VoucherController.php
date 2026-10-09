@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Finance;
 
 use App\Domains\Finance\Models\DisbursementVoucher;
+use App\Domains\Finance\Services\CorporateBankingExporter;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class VoucherController extends Controller
@@ -54,7 +54,7 @@ class VoucherController extends Controller
         ]);
     }
 
-    public function exportBca(DisbursementVoucher $voucher, \App\Domains\Finance\Services\CorporateBankingExporter $exporter)
+    public function exportBca(DisbursementVoucher $voucher, CorporateBankingExporter $exporter)
     {
         $content = $exporter->exportBcaFormat($voucher);
         $fileName = "BCA-PAYROLL-{$voucher->voucher_number}.txt";
@@ -65,7 +65,7 @@ class VoucherController extends Controller
         ]);
     }
 
-    public function exportMandiri(DisbursementVoucher $voucher, \App\Domains\Finance\Services\CorporateBankingExporter $exporter)
+    public function exportMandiri(DisbursementVoucher $voucher, CorporateBankingExporter $exporter)
     {
         $content = $exporter->exportMandiriMcmFormat($voucher);
         $fileName = "MANDIRI-MCM-{$voucher->voucher_number}.csv";

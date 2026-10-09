@@ -57,4 +57,3 @@ class LeaveRequest extends Model
         return $this->hasMany(LeaveApprovalStep::class);
     }
 }
-

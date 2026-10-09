@@ -90,4 +90,3 @@ class Employee extends Model
         return $this->hasMany(PayrollSlip::class);
     }
 }
-

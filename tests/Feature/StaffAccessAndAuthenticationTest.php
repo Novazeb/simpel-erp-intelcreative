@@ -7,6 +7,7 @@ use App\Domains\HR\Models\Employee;
 use App\Models\User;
 use Database\Seeders\ChartOfAccountSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
+use Database\Seeders\StaffSimulationSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -131,7 +132,7 @@ class StaffAccessAndAuthenticationTest extends TestCase
      */
     public function test_simulation_staff_rian_and_dewi_can_access_my_slips(): void
     {
-        $this->seed(\Database\Seeders\StaffSimulationSeeder::class);
+        $this->seed(StaffSimulationSeeder::class);
 
         // Uji Rian Ardiansyah
         $rianUser = User::where('email', 'rian.ardiansyah@intelcreative.co.id')->first();
@@ -161,10 +162,10 @@ class StaffAccessAndAuthenticationTest extends TestCase
      */
     public function test_simulation_staff_can_view_projects_and_timesheets(): void
     {
-        $this->seed(\Database\Seeders\StaffSimulationSeeder::class);
+        $this->seed(StaffSimulationSeeder::class);
 
         $rianUser = User::where('email', 'rian.ardiansyah@intelcreative.co.id')->first();
-        
+
         $projectResponse = $this->actingAs($rianUser)->get('/operations/projects');
         $projectResponse->assertStatus(200);
         $projectResponse->assertInertia(fn ($page) => $page

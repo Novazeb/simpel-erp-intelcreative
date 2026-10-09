@@ -35,4 +35,3 @@ class PayrollSlipItem extends Model
         return $this->belongsTo(PayrollSlip::class, 'payroll_slip_id');
     }
 }
-

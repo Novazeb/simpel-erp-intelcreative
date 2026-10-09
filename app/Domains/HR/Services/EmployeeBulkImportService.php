@@ -49,31 +49,31 @@ class EmployeeBulkImportService
 
                 if ($validator->fails()) {
                     throw ValidationException::withMessages([
-                        'row_' . $rowNumber => "Baris ke-{$rowNumber} tidak valid: " . implode(', ', $validator->errors()->all()),
+                        'row_'.$rowNumber => "Baris ke-{$rowNumber} tidak valid: ".implode(', ', $validator->errors()->all()),
                     ]);
                 }
 
                 // 2. Validasi duplikasi internal dalam satu berkas impor
                 if (in_array($row['nik'], $seenNiks)) {
                     throw ValidationException::withMessages([
-                        'row_' . $rowNumber => "Baris ke-{$rowNumber}: Duplikasi NIK '{$row['nik']}' ditemukan dalam berkas impor yang sama.",
+                        'row_'.$rowNumber => "Baris ke-{$rowNumber}: Duplikasi NIK '{$row['nik']}' ditemukan dalam berkas impor yang sama.",
                     ]);
                 }
                 if (in_array($row['email'], $seenEmails)) {
                     throw ValidationException::withMessages([
-                        'row_' . $rowNumber => "Baris ke-{$rowNumber}: Duplikasi Email '{$row['email']}' ditemukan dalam berkas impor yang sama.",
+                        'row_'.$rowNumber => "Baris ke-{$rowNumber}: Duplikasi Email '{$row['email']}' ditemukan dalam berkas impor yang sama.",
                     ]);
                 }
 
                 // 3. Validasi duplikasi terhadap database
                 if (Employee::where('nik', $row['nik'])->exists()) {
                     throw ValidationException::withMessages([
-                        'row_' . $rowNumber => "Baris ke-{$rowNumber}: NIK '{$row['nik']}' sudah terdaftar dalam sistem.",
+                        'row_'.$rowNumber => "Baris ke-{$rowNumber}: NIK '{$row['nik']}' sudah terdaftar dalam sistem.",
                     ]);
                 }
                 if (Employee::where('email', $row['email'])->exists()) {
                     throw ValidationException::withMessages([
-                        'row_' . $rowNumber => "Baris ke-{$rowNumber}: Email '{$row['email']}' sudah terdaftar dalam sistem.",
+                        'row_'.$rowNumber => "Baris ke-{$rowNumber}: Email '{$row['email']}' sudah terdaftar dalam sistem.",
                     ]);
                 }
 
@@ -83,7 +83,7 @@ class EmployeeBulkImportService
                 // 4. Resolusi Relasi Departemen, Jabatan, dan Shift
                 $department = Department::firstOrCreate(
                     ['code' => strtoupper(trim($row['department_code']))],
-                    ['name' => strtoupper(trim($row['department_code'])) . ' Dept']
+                    ['name' => strtoupper(trim($row['department_code'])).' Dept']
                 );
 
                 $designation = Designation::firstOrCreate(
@@ -148,4 +148,3 @@ class EmployeeBulkImportService
         return $data;
     }
 }
-

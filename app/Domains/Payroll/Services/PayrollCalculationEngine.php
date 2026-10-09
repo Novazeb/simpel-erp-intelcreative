@@ -8,7 +8,6 @@ use App\Domains\HR\Models\Employee;
 use App\Domains\Payroll\Models\PayrollPeriod;
 use App\Domains\Payroll\Models\PayrollSlip;
 use App\Domains\Payroll\Models\PayrollSlipItem;
-use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
 class PayrollCalculationEngine
@@ -127,7 +126,7 @@ class PayrollCalculationEngine
         if ($tax > 0) {
             $items[] = [
                 'item_type' => 'TAX',
-                'name' => 'Pajak PPh 21 (TER Kategori ' . ($employee->tax_status ?? 'TK/0') . ')',
+                'name' => 'Pajak PPh 21 (TER Kategori '.($employee->tax_status ?? 'TK/0').')',
                 'amount' => $tax,
             ];
             $totalDeductions += $tax;
@@ -173,4 +172,3 @@ class PayrollCalculationEngine
         return $slip;
     }
 }
-
