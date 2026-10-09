@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\GovernanceController;
+use App\Http\Controllers\Api\AttendanceQrController;
 use App\Http\Controllers\Approval\ApprovalCenterController;
 use App\Http\Controllers\Attendance\AttendanceController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Finance\GeneralLedgerController;
+use App\Http\Controllers\Finance\ReimbursementController;
 use App\Http\Controllers\Finance\VoucherController;
+use App\Http\Controllers\Governance\DocumentController;
 use App\Http\Controllers\Health\HealthCheckController;
 use App\Http\Controllers\HR\EmployeeController;
 use App\Http\Controllers\Operations\ProjectController;
@@ -26,6 +29,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Production Health Check & Monitoring API
 Route::get('/api/health', [HealthCheckController::class, 'check'])->name('api.health');
+
+// Terminal Kios Tablet Lobby & Dynamic QR Attendance API
+Route::get('/kiosk', [AttendanceQrController::class, 'showKiosk'])->name('kiosk.scanner');
+Route::post('/api/v1/attendance/qr-scan', [AttendanceQrController::class, 'processScan'])->name('api.attendance.qr-scan');
+Route::get('/api/v1/attendance/my-qr', [AttendanceQrController::class, 'generateMyQr'])->middleware(['auth'])->name('api.attendance.my-qr');
 
 Route::middleware(['auth'])->group(function () {
     // 0. Ringkasan Eksekutif
@@ -60,12 +68,17 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/clock-in', [AttendanceController::class, 'clockIn'])
             ->middleware('permission:attendance.record-self')
             ->name('clock-in');
+
+        Route::get('/my-qr', [AttendanceQrController::class, 'generateMyQr'])
+            ->middleware('permission:attendance.record-self')
+            ->name('my-qr');
     });
 
     // 3. Operasional & Bisnis Kreatif
     Route::prefix('operations')->name('operations.')->group(function () {
         Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
         Route::get('/timesheets', [TimesheetController::class, 'index'])->name('timesheets.index');
+        Route::post('/timesheets', [TimesheetController::class, 'store'])->name('timesheets.store');
         Route::get('/quotations', fn () => Inertia::render('Operations/QuotationForm'))->name('quotations.index');
     });
 
@@ -126,9 +139,23 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/ledger', [GeneralLedgerController::class, 'index'])
             ->middleware('permission:finance.journal-view')
             ->name('ledger.index');
+
+        Route::get('/reimbursements', [ReimbursementController::class, 'index'])
+            ->name('reimbursements.index');
+
+        Route::post('/reimbursements', [ReimbursementController::class, 'store'])
+            ->name('reimbursements.store');
+
+        Route::post('/reimbursements/{reimbursement}/approve', [ReimbursementController::class, 'approveByFinance'])
+            ->middleware('permission:finance.voucher-release')
+            ->name('reimbursements.approve');
     });
 
-    // 7. Tata Kelola & Keamanan (Super Admin)
+    // 7. Pusat Dokumen & Kebijakan
+    Route::post('/documents/{document}/acknowledge', [DocumentController::class, 'acknowledge'])
+        ->name('documents.acknowledge');
+
+    // 8. Tata Kelola & Keamanan (Super Admin)
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/roles-permissions', [GovernanceController::class, 'rbac'])->name('rbac.index');
         Route::get('/audit-trails', [GovernanceController::class, 'auditTrails'])->name('audit.index');
