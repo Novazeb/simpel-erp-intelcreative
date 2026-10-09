@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Operations;
 
+use App\Domains\HR\Models\Employee;
+use App\Domains\Project\Models\Project;
+use App\Domains\Project\Models\Task;
+use App\Domains\Project\Models\Timesheet;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,106 +15,82 @@ class TimesheetController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-
-        $timesheets = [
-            [
-                'id' => 'ts-01',
-                'employee_name' => 'Rian Ardiansyah',
-                'email' => 'rian.ardiansyah@intelcreative.co.id',
-                'project_name' => 'Brand Identity & Web App Redesign',
-                'task' => 'Implementasi Komponen UI & Design System Minimalis',
-                'billable_hours' => 6.5,
-                'date' => '2026-10-08',
-            ],
-            [
-                'id' => 'ts-02',
-                'employee_name' => 'Rian Ardiansyah',
-                'email' => 'rian.ardiansyah@intelcreative.co.id',
-                'project_name' => 'Brand Identity & Web App Redesign',
-                'task' => 'Ekspor Aset SVG & Optimasi Tipografi Navigasi',
-                'billable_hours' => 5.0,
-                'date' => '2026-10-07',
-            ],
-            [
-                'id' => 'ts-03',
-                'employee_name' => 'Rian Ardiansyah',
-                'email' => 'rian.ardiansyah@intelcreative.co.id',
-                'project_name' => 'Brand Identity & Web App Redesign',
-                'task' => 'Penyusunan Arsitektur Token Warna & Variabel Spasi CSS',
-                'billable_hours' => 7.0,
-                'date' => '2026-10-06',
-            ],
-            [
-                'id' => 'ts-04',
-                'employee_name' => 'Rian Ardiansyah',
-                'email' => 'rian.ardiansyah@intelcreative.co.id',
-                'project_name' => 'Brand Identity & Web App Redesign',
-                'task' => 'Wireframe Resolusi Desktop & Mobile Responsif',
-                'billable_hours' => 6.0,
-                'date' => '2026-10-05',
-            ],
-            [
-                'id' => 'ts-05',
-                'employee_name' => 'Rian Ardiansyah',
-                'email' => 'rian.ardiansyah@intelcreative.co.id',
-                'project_name' => 'Brand Identity & Web App Redesign',
-                'task' => 'Review Bersama Klien & Penyesuaian Artboard UI',
-                'billable_hours' => 4.0,
-                'date' => '2026-10-04',
-            ],
-            [
-                'id' => 'ts-06',
-                'employee_name' => 'Dewi Safitri',
-                'email' => 'dewi.safitri@intelcreative.co.id',
-                'project_name' => 'Enterprise E-Commerce Engine',
-                'task' => 'Perancangan Skema Database PostgreSQL & Partisi Tabel',
-                'billable_hours' => 7.0,
-                'date' => '2026-10-08',
-            ],
-            [
-                'id' => 'ts-07',
-                'employee_name' => 'Dewi Safitri',
-                'email' => 'dewi.safitri@intelcreative.co.id',
-                'project_name' => 'Enterprise E-Commerce Engine',
-                'task' => 'Integrasi Payment Gateway & Auto-Journal Voucher Rekonsiliasi',
-                'billable_hours' => 6.0,
-                'date' => '2026-10-07',
-            ],
-            [
-                'id' => 'ts-08',
-                'employee_name' => 'Dewi Safitri',
-                'email' => 'dewi.safitri@intelcreative.co.id',
-                'project_name' => 'Enterprise E-Commerce Engine',
-                'task' => 'Benchmark Query Performa Tinggi & Indexing Kolom Pencarian',
-                'billable_hours' => 7.5,
-                'date' => '2026-10-06',
-            ],
-            [
-                'id' => 'ts-09',
-                'employee_name' => 'Dewi Safitri',
-                'email' => 'dewi.safitri@intelcreative.co.id',
-                'project_name' => 'Enterprise E-Commerce Engine',
-                'task' => 'Pembuatan Endpoint API & Validasi Form Request',
-                'billable_hours' => 6.5,
-                'date' => '2026-10-05',
-            ],
-            [
-                'id' => 'ts-10',
-                'employee_name' => 'Dewi Safitri',
-                'email' => 'dewi.safitri@intelcreative.co.id',
-                'project_name' => 'Enterprise E-Commerce Engine',
-                'task' => 'Penulisan Unit Test & Mocking Transaksi Pembayaran',
-                'billable_hours' => 5.0,
-                'date' => '2026-10-04',
-            ],
-        ];
-
         $isManager = $user->can('employee.view-any');
+
+        $query = Timesheet::with(['employee', 'project', 'task'])->latest('work_date');
+
+        if (! $isManager) {
+            $employee = $user->employee
+                ?? Employee::where('user_id', $user->id)->first()
+                ?? Employee::where('email', $user->email)->first();
+
+            $query->where('employee_id', $employee?->id ?? '00000000-0000-0000-0000-000000000000');
+        }
+
+        $records = $query->get();
+
+        $timesheets = $records->map(function ($ts) {
+            return [
+                'id' => (string) $ts->id,
+                'employee_name' => $ts->employee?->full_name ?? 'Karyawan',
+                'email' => $ts->employee?->email ?? '',
+                'project_name' => $ts->project?->project_name ?? 'Proyek Internal',
+                'task' => $ts->task_description,
+                'billable_hours' => (float) $ts->billable_hours,
+                'date' => is_string($ts->work_date) ? substr($ts->work_date, 0, 10) : $ts->work_date?->format('Y-m-d'),
+                'status' => $ts->status,
+            ];
+        })->toArray();
+
+        $projects = Project::all(['id', 'project_name', 'project_code']);
+        $tasks = Task::all(['id', 'project_id', 'name']);
 
         return Inertia::render('Operations/TimesheetList', [
             'timesheets' => $timesheets,
+            'projects' => $projects,
+            'tasks' => $tasks,
             'currentUserEmail' => $user->email,
             'isManager' => $isManager,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'project_id' => 'required|uuid|exists:projects,id',
+            'task_id' => 'nullable|uuid|exists:tasks,id',
+            'work_date' => 'required|date',
+            'billable_hours' => 'required|numeric|min:0.5|max:24',
+            'task_description' => 'required|string|max:1000',
+        ]);
+
+        $user = $request->user();
+        $employee = $user->employee
+            ?? Employee::where('user_id', $user->id)->first()
+            ?? Employee::where('email', $user->email)->first();
+
+        if (! $employee) {
+            abort(404, 'Profil karyawan tidak ditemukan.');
+        }
+
+        $timesheet = Timesheet::create([
+            'employee_id' => $employee->id,
+            'project_id' => $validated['project_id'],
+            'task_id' => $validated['task_id'] ?? null,
+            'work_date' => $validated['work_date'],
+            'billable_hours' => $validated['billable_hours'],
+            'task_description' => $validated['task_description'],
+            'status' => 'APPROVED',
+        ]);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Log jam kerja proyek berhasil disimpan.',
+                'data' => $timesheet,
+            ], 201);
+        }
+
+        return redirect()->back()->with('success', 'Log jam kerja proyek berhasil disimpan.');
     }
 }
