@@ -34,6 +34,9 @@ class Employee extends Model
         'bank_account_number',
         'bank_account_holder',
         'basic_salary',
+        'qr_secret_key',
+        'kiosk_pin_hash',
+        'signature_specimen_path',
     ];
 
     protected function casts(): array
